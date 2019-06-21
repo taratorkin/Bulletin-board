@@ -1,6 +1,8 @@
 @import "fonts";
 $bluish: #2d74da;
 $text: #68717c;
+$error: #fa5e5b;
+$correct: #16c98d;
 
 input[type="file"] {
   display: none;
@@ -41,40 +43,8 @@ label {
 
 .description {
   height: 147px;
-}
-
-select {
-  height: 100%;
-  width: 100%;
-  background: none;
-  border: none;
-  appearance: none;
-  padding: 0;
-  font-family: "SourceSansPro";
-  font-size: 14px;
-  color: $text;
-}
-
-.city-select {
-  padding: 0;
-  height: 36px;
-  background-color: white;
-  position: relative;
-}
-
-.city-select:before {
-  content: '';
-  background-image: url('../img/chevron-down-solid.svg');
-  background-size: 25%;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  pointer-events: none;
-  width: 10%;
-  height: 100%;
+  resize: none;
+  padding-top: 5px;
 }
 
 .image-button {
@@ -84,9 +54,39 @@ select {
   border: 1px solid $bluish;
   color: $bluish;
   height: 36px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   cursor: pointer;
   border-radius: 3px;
+  &:hover {
+    background-color: $bluish;
+    color: white;
+  }
+}
+
+.image__wrapper {
+  display: flex;
+}
+
+.image__img {
+  display: inline-flex;
+}
+
+.image__text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "SourceSansPro";
+  font-size: 14px;
+
+  &__name {
+    color: $bluish;
+  }
+  &__delete {
+    color: $error;
+    border-bottom: 1px dotted $error;
+    cursor: pointer;
+  }
 }
 
 .submit-button {
@@ -94,21 +94,55 @@ select {
   justify-content: center;
   align-items: center;
   height: 36px;
-  background-color: $bluish;
   color: white;
   cursor: pointer;
   border-radius: 3px;
   box-shadow: 0 1px 0 0 rgba(27, 40, 52, 0.16);
+  margin-top: 15px;
+  background: rgb(45,116,218);
+  background: linear-gradient(90deg, rgba(45,116,218,1) 0%, rgba(35,103,200,1) 35%);
+  &:hover {
+    background: rgb(45,116,218);
+    background: linear-gradient(90deg, rgba(45,116,218,1) 0%, rgba(39,108,207,1) 35%, rgba(35,103,200,1) 46%); 
+  }
 }
 
 .validation {
-  display: inline-flex;
+  display: inline-block;
   font-family: "SourceSansPro";
   font-size: 14px;
   line-height: 22px;
+  vertical-align: top;
+  margin-left: 20px;
+}
+
+.validation__wrapper {
+  display: inline-block;
+  margin-right: 5px;
   vertical-align: top;
 }
 
 .validation--initial {
   color: $text;
+}
+
+.validation--correct {
+  color: $correct;
+}
+
+.validation--error {
+  color: $error;
+}
+
+.empty {
+  border-color: $error;
+
+}
+
+.correct {
+  border-color: #d4d8db;
+}
+
+.error {
+  border-color: $error;
 }
