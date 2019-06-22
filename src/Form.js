@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import uuid from 'uuid/v4';
 import styles from './css/form.min.css';
 
 export default class Form extends Component {
@@ -9,7 +10,7 @@ export default class Form extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
-    this.state = {
+    this.initialState = {
       headline: '',
       text: '',
       phone: '',
@@ -20,7 +21,8 @@ export default class Form extends Component {
       textValid: false,
       phoneValid: false,
       formValid: false
-    }
+    };
+    this.state = this.initialState
   }
 
   handleInput(e) {
@@ -104,7 +106,8 @@ export default class Form extends Component {
 
   handleForm(e) {
     e.preventDefault();
-    console.log('test');
+    this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
+    this.setState({ ...this.initialState });
   }
 
   render() {

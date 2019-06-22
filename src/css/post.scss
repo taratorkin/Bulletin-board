@@ -1,0 +1,53 @@
+@import "fonts";
+@import "vars";
+
+.wrapper {
+  height: 280px;
+  margin-bottom: 80px;
+  padding: 0 !important;
+  font-family: "SourceSansPro";
+  font-size: 14px;
+  color: $text;
+}
+
+.left {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  line-height: 22px;
+  &__headline {
+    font-size: 18px;
+    color: $darkText;
+  }
+}
+
+.right {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  &__contacts {
+    display: flex;
+    &__phone {
+      margin-left: 10px;
+    }
+  }
+  &__buttons__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    border-radius: 3px;
+    margin-bottom: 15px;
+
+    &--edit {
+      border: 1px solid $bluish;
+      color: $bluish;
+    }
+    &--delete {
+      border: 1px solid $error;
+      color: $error;
+    }
+  }
+}

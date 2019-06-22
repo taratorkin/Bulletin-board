@@ -1,8 +1,5 @@
 @import "fonts";
-$bluish: #2d74da;
-$text: #68717c;
-$error: #fa5e5b;
-$correct: #16c98d;
+@import "vars";
 
 input[type="file"] {
   display: none;
@@ -103,7 +100,7 @@ label {
   background: linear-gradient(90deg, rgba(45,116,218,1) 0%, rgba(35,103,200,1) 35%);
   &:hover {
     background: rgb(45,116,218);
-    background: linear-gradient(90deg, rgba(45,116,218,1) 0%, rgba(39,108,207,1) 35%, rgba(35,103,200,1) 46%); 
+    background: linear-gradient(90deg, rgba(45,116,218,1) 0%, rgba(39,108,207,1) 35%, rgba(35,103,200,1) 46%);
   }
 }
 

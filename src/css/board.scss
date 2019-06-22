@@ -1,0 +1,14 @@
+@import "fonts";
+@import "vars";
+
+.wrapper {
+  margin-top: 50px;
+  padding: 0 !important;
+}
+
+.headline {
+  font-family: "SourceSansPro semibold";
+  font-size: 24px;
+  line-height: 38px;
+  color: $darkText;
+}
