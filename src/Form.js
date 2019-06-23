@@ -16,7 +16,7 @@ export default class Form extends Component {
       phone: '',
       image: '',
       imageName: '',
-      formErrors: {headline: '', phone: ''},
+      formErrors: {headline: '', text: '', phone: ''},
       headlineValid: false,
       textValid: false,
       phoneValid: false,
@@ -114,7 +114,7 @@ export default class Form extends Component {
       this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
     }
 
-    this.setState({ ...this.initialState });
+    this.setState({ ...this.initialState, formErrors: {headline: '', text: '', phone: '' }});
   }
 
   render() {
