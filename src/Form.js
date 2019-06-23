@@ -9,15 +9,17 @@ export default class Form extends Component {
     this.handleForm = this.handleForm.bind(this);
     this.loadImage = this.loadImage.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.handleCityInput = this.handleCityInput.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
     this.initialState = {
       headline: '',
       text: '',
       phone: '',
+      city: '',
       image: '',
       imageName: '',
-      formErrors: {headline: '', text: '', phone: ''},
+      formErrors: {headline: '', text: '', phone: '', city: ''},
       headlineValid: false,
       textValid: false,
       phoneValid: false,
@@ -34,11 +36,18 @@ export default class Form extends Component {
     });
   }
 
+  handleCityInput(data) {
+    this.setState({ city: data.value }, () => {
+      this.validateField('city', this.state.city);
+    });
+  }
+
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
     let headlineValid = this.state.headlineValid;
     let textValid = this.state.textValid;
     let phoneValid = this.state.phoneValid;
+    let cityValid = false;
 
     switch(fieldName) {
       case 'headline':
@@ -53,7 +62,7 @@ export default class Form extends Component {
 
       case 'phone':
         if(value.length > 0) {
-          if(value.search(/\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}/) === 0) {
+          if(value.search(/\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}/) === 0) {
             phoneValid = true;
             fieldValidationErrors.phone = 'correct';
           } else {
@@ -64,6 +73,11 @@ export default class Form extends Component {
         }
         break;
 
+      case 'city':
+        cityValid = value.length > 0;
+        fieldValidationErrors.city = cityValid ? 'correct' : '';
+        break;
+
       default:
         break;
     }
@@ -72,7 +86,7 @@ export default class Form extends Component {
       formErrors: fieldValidationErrors,
       headlineValid: headlineValid,
       textValid: textValid,
-      phoneValid: phoneValid
+      phoneValid: phoneValid,
     }, this.validateForm);
   }
 
@@ -85,7 +99,7 @@ export default class Form extends Component {
   loadImage(e) {
     let reader  = new FileReader();
     let name = e.target.value;
-    name = name.replace(/.*[\/\\]/, '');
+    name = name.replace(/.*[/\\]/, '');
 
     reader.onloadend = () => {
       this.setState({image: reader.result, imageName: name});
@@ -110,18 +124,20 @@ export default class Form extends Component {
 
     if(this.props.editMode) {
       this.props.callback({ id: this.props.item.id, headline: this.state.headline, text: this.state.text, phone: this.state.phone,
-        image: this.state.image});
+        city: this.state.city, image: this.state.image});
     } else {
-      this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
+      this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone,
+        city: this.state.city, image: this.state.image });
     }
 
-    this.setState({ ...this.initialState, formErrors: {headline: '', text: '', phone: '' }});
+    this.setState({ ...this.initialState, formErrors: {headline: '', text: '', phone: '', city: '' }});
   }
 
   render() {
     let headlineInput;
     let textInput;
     let phoneInput;
+    let cityInput;
     let imageText;
     let image;
 
@@ -130,28 +146,30 @@ export default class Form extends Component {
         <p className={styles.image__text__name}>{this.state.imageName}</p>
         <p className={styles.image__text__delete} onClick={this.deleteImage}>Удалить</p>
       </Fragment>;
-      image = <img src="#" ref={elem => { this.image = elem }}/>;
+      image = <img src="#" alt="" ref={elem => { this.image = elem }}/>;
     } else {
       imageText = '';
       image = '';
     }
 
+      console.log(this.state.formErrors.city);
+
     switch(this.state.formErrors.headline) {
       case 'correct':
         headlineInput = <div className={[styles['validation'], styles['validation--correct']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-check-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-check-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполнено</div>
         </div>;
         break;
       case 'empty':
         headlineInput = <div className={[styles['validation'], styles['validation--error']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="fas fa-exclamation-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="fas fa-exclamation-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполните поле</div>
         </div>;
         break;
       default:
         headlineInput = <div className={[styles['validation'], styles['validation--initial']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-question-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-question-circle"></i></div>
           <div style={{display: 'inline-block'}}>Обязательное поле<br />Не более 140 символов</div>
         </div>;
     }
@@ -159,48 +177,59 @@ export default class Form extends Component {
     switch(this.state.formErrors.text) {
       case 'correct':
         textInput = <div className={[styles['validation'], styles['validation--correct']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-check-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-check-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполнено</div>
         </div>;
         break;
       case 'empty':
         textInput = <div className={[styles['validation'], styles['validation--error']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="fas fa-exclamation-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="fas fa-exclamation-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполните поле<br />Не более 300 символов</div>
         </div>;
         break;
       default:
         textInput = <div className={[styles['validation'], styles['validation--initial']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-question-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-question-circle"></i></div>
           <div style={{display: 'inline-block'}}>Обязательное поле<br />Не более 300 символов</div>
         </div>;
+    }
+
+    switch(this.state.formErrors.city) {
+        case 'correct':
+          cityInput = <div className={[styles['validation'], styles['validation--correct']].join(' ')}>
+            <div className={styles['validation__wrapper']}><i className="far fa-check-circle"></i></div>
+            <div style={{display: 'inline-block'}}>Заполнено</div>
+          </div>;
+          break;
+        default:
+          cityInput = '';
     }
 
     switch(this.state.formErrors.phone) {
       case 'correct':
         phoneInput = <div className={[styles['validation'], styles['validation--correct']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-check-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-check-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполнено</div>
         </div>;
         break;
       case 'empty':
         phoneInput = <div className={[styles['validation'], styles['validation--error']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="fas fa-exclamation-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="fas fa-exclamation-circle"></i></div>
           <div style={{display: 'inline-block'}}>Заполните поле</div>
         </div>;
         break;
       case 'error':
         phoneInput = <div className={[styles['validation'], styles['validation--error']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="fas fa-exclamation-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="fas fa-exclamation-circle"></i></div>
           <div style={{display: 'inline-block'}}>Неверный формат</div>
         </div>;
         break;
       default:
         phoneInput = <div className={[styles['validation'], styles['validation--initial']].join(' ')}>
-          <div className={styles['validation__wrapper']}><i class="far fa-question-circle"></i></div>
+          <div className={styles['validation__wrapper']}><i className="far fa-question-circle"></i></div>
           <div style={{display: 'inline-block'}}>Обязательное поле</div>
         </div>;
-    }
+  }
     return (
         <form onSubmit={this.handleForm}>
           <p className={[styles['top-text'], 'offset-3 col-3'].join(' ')}>Подать объявление</p>
@@ -221,8 +250,14 @@ export default class Form extends Component {
             maxLength="18" placeholder="+7 (___) ___-__-__" onChange={this.handleInput}/>
           {phoneInput}
 
+          <label htmlFor="city" className={'offset-3 col-3'}>Город:</label>
+          <Select callback={this.handleCityInput} name="city" className={[styles[this.state.formErrors.city]].join(' ')}
+            items={[{value: 'Москва', id: 1}, {value: 'Хабаровск', id: 2}, {value: 'Чебоксары', id: 3}]}>
+          </Select>
+          {cityInput}
+
           <label className={[styles['image-button'], 'offset-3 col-2'].join(' ')}>
-            <i class="fas fa-paperclip" style={{marginRight: '5px'}}></i>Прикрепить фото
+            <i className="fas fa-paperclip" style={{marginRight: '5px'}}></i>Прикрепить фото
             <input type="file" onChange={this.loadImage} ref={elem => { this.imageInput = elem }}/>
           </label>
           <div className={['offset-3 col-2', styles.image__wrapper].join(' ')}>

@@ -29,8 +29,12 @@
   height: 100%;
   &__contacts {
     display: flex;
-    &__phone {
-      margin-left: 10px;
+    flex-direction: column;
+    &__container {
+      display: flex;
+      span {
+        margin-left: 10px;
+      }
     }
   }
   &__buttons__button {

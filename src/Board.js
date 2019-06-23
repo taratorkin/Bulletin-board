@@ -4,11 +4,6 @@ import Form from './Form';
 import styles from './css/board.min.css'
 
 export default class Board extends Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     let renderedList = JSON.parse(this.props.postsList).map((item) => {
       if(item) {

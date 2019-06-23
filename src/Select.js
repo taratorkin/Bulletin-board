@@ -9,7 +9,7 @@ export default class Select extends Component {
     this.state = {
       items: this.props.items || [],
       showItems: false,
-      selectedItem: { value: '' },
+      selectedItem: {value: ''},
     }
   }
 
@@ -24,11 +24,17 @@ export default class Select extends Component {
     this.setState({
       selectedItem: item,
       showItems: false,
+    }, () => {
+      this.props.callback(this.state.selectedItem);
     })
   }
 
   cancelSelection() {
-    this.setState({ selectedItem: { value: ''} });
+    this.setState({
+      selectedItem: { value: ''}
+    }, () => {
+      this.props.callback(this.state.selectedItem);
+    });
   }
 
   render() {
