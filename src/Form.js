@@ -106,7 +106,14 @@ export default class Form extends Component {
 
   handleForm(e) {
     e.preventDefault();
-    this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
+
+    if(this.props.editMode) {
+      this.props.callback({ id: this.props.item.id, headline: this.state.headline, text: this.state.text, phone: this.state.phone,
+        image: this.state.image, editMode: true});
+    } else {
+      this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
+    }
+
     this.setState({ ...this.initialState });
   }
 

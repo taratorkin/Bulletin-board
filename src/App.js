@@ -13,27 +13,43 @@ class App extends Component {
   }
 
   handleFormData(data) {
-    this.setState((prevState, props) => {
-      let listCopy = prevState.postsList;
-      listCopy = JSON.parse(listCopy);
-      listCopy.unshift(data);
-      return { postsList: JSON.stringify(listCopy) };
-    }, () => {
-      localStorage.setItem('postsList', this.state.postsList);
-    });
+    if(data.editMode) {
+      this.setState((prevState, props) => {
+        let list = prevState.postsList;
+        list = JSON.parse(list);
+        delete data.editMode;
+        for(let i = 0, l = list.length; i < l; i++) {
+          if(data.id === list[i].id) {
+            list.splice(i, 1, data);
+          }
+        }
+        return { postsList: JSON.stringify(list) }
+      }, () => {
+        localStorage.setItem('postsList', this.state.postsList);
+      });
+    } else {
+      this.setState((prevState, props) => {
+        let list = prevState.postsList;
+        list = JSON.parse(list);
+        list.unshift(data);
+        return { postsList: JSON.stringify(list) };
+      }, () => {
+        localStorage.setItem('postsList', this.state.postsList);
+      });
+    }
   }
 
   handleDelete(id) {
     this.setState((prevState, props) => {
-      let listCopy = prevState.postsList;
-      listCopy = JSON.parse(listCopy);
-      for(let i = 0, l = listCopy.length; i < l; i++) {
-        if(id === listCopy[i].id) {
-          listCopy.splice(i, 1);
+      let list = prevState.postsList;
+      list = JSON.parse(list);
+      for(let i = 0, l = list.length; i < l; i++) {
+        if(id === list[i].id) {
+          list.splice(i, 1);
           break;
         }
       }
-      return { postsList: JSON.stringify(listCopy) };
+      return { postsList: JSON.stringify(list) };
     }, () => {
       localStorage.setItem('postsList', this.state.postsList);
     });
@@ -43,7 +59,7 @@ class App extends Component {
     return (
       <Fragment>
         <Form callback={ this.handleFormData }></Form>
-        <Board postsList={ this.state.postsList } handleDelete={id => { this.handleDelete(id) }}></Board>
+        <Board callback={ this.handleFormData } postsList={ this.state.postsList } handleDelete={id => { this.handleDelete(id) }}></Board>
       </Fragment>
     );
   }
