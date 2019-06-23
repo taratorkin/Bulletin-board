@@ -11,7 +11,7 @@ export default class Board extends Component {
   render() {
     let renderedList = JSON.parse(this.props.postsList).map((item) => {
       if(item) {
-        return <Post key={ item.id } postData={ item }></Post>
+        return <Post key={ item.id } postData={ item } handleDelete={id => { this.props.handleDelete(id) }}></Post>
       } else {
         return '';
       }

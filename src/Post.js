@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './css/post.min.css';
 import phoneIcon from './img/phone-icon.svg';
 
-export default ({ postData }) => {
+export default ({ postData, handleDelete }) => {
   return (
     <div className={['col-12', styles.wrapper].join(' ')}>
       <div className={['col-8', styles.left].join(' ')}>
@@ -16,7 +16,8 @@ export default ({ postData }) => {
         </div>
         <div>
           <div className={['col-12', styles.right__buttons__button, styles['right__buttons__button--edit']].join(' ')}>Редактировать</div>
-          <div className={['col-12', styles.right__buttons__button, styles['right__buttons__button--delete']].join(' ')}>Удалить</div>
+          <div className={['col-12', styles.right__buttons__button, styles['right__buttons__button--delete']].join(' ')}
+            onClick={ () => { handleDelete(postData.id) } }>Удалить</div>
         </div>
       </div>
     </div>
