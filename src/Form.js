@@ -109,7 +109,7 @@ export default class Form extends Component {
 
     if(this.props.editMode) {
       this.props.callback({ id: this.props.item.id, headline: this.state.headline, text: this.state.text, phone: this.state.phone,
-        image: this.state.image, editMode: true});
+        image: this.state.image});
     } else {
       this.props.callback({ id: uuid(), headline: this.state.headline, text: this.state.text, phone: this.state.phone, image: this.state.image });
     }
