@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Select from './Select';
 import uuid from 'uuid/v4';
 import styles from './css/form.min.css';
 
